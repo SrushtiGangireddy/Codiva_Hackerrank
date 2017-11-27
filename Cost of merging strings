@@ -1,0 +1,52 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution{
+    public static void main(String args[]){
+        
+        Scanner sc = new Scanner(System.in);
+        
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+        int k = sc.nextInt();
+        
+        String a = sc.next();
+        String b = sc.next();
+        
+        long[][][] dp = new long[n][m][k+1];
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                Arrays.fill(dp[i][j],-1);
+            }
+        }
+        
+        long result = findCost(a,b,dp,k,0,0);
+        if(result == Long.MAX_VALUE)
+            System.out.println("-1");
+        else
+            System.out.println(result);
+    }
+    
+    static long findCost(String a,String b,long[][][] dp,int k,int i,int j){
+        
+        if(k <= 0)
+            return 0;
+        if(i >= a.length() || j >= b.length())
+            return Long.MAX_VALUE;
+        if(dp[i][j][k] != -1)
+            return dp[i][j][k];
+        
+        long result = findCost(a,b,dp,k,i+1,j);
+        result=Math.min(result,findCost(a,b,dp,k,i,j+1));
+        
+        long cost = (a.charAt(i)-'a')^(b.charAt(j)-'a');
+        long value = findCost(a,b,dp,k-1,i+1,j+1);
+        if(value < Long.MAX_VALUE)
+            result = Math.min(result,cost+value);
+        return dp[i][j][k]=result;
+        
+    }
+    
+    
+}
