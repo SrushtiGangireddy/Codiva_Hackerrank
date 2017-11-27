@@ -61,3 +61,85 @@ public class Solution{
         
     }
 }
+
+//Solution 2
+
+import java.io.*;
+import java.util.*;
+
+public class Solution{
+    public static void main(String args[]){
+        
+        Scanner sc = new Scanner(System.in);
+        
+        int n = sc.nextInt();
+        
+        int[] brandsSold = new int[n];
+        HashMap<Integer,ArrayList<Integer>> cameraPrice = new HashMap<Integer,ArrayList<Integer>>();
+        HashMap<String,ArrayList<Integer>> comboPrices = new HashMap<String,ArrayList<Integer>>();
+        
+        for(int i=0;i<n;i++){
+            brandsSold[i]=sc.nextInt();
+        }
+        
+        for(int i=0;i<n;i++){
+            int brand=brandsSold[i];
+            int price=sc.nextInt();
+            
+            if(cameraPrice.containsKey(brand)){
+                ArrayList<Integer> val = (ArrayList<Integer>)cameraPrice.get(brand);
+                val.add(price);
+                cameraPrice.put(brand,val);
+            }else{
+                ArrayList<Integer> val = new ArrayList<Integer>();
+                val.add(price);
+                cameraPrice.put(brand,val);
+            }
+            
+        }
+        
+        int nB = 5;
+        //System.out.println(cameraPrice);
+        for(int i=0;i<(1<<nB);i++){
+            ArrayList<Integer> combo = new ArrayList<Integer>();
+            String key = "";
+           for(int j=0;j<nB;j++){
+               if((i&(1<<j)) > 0){
+                   key += String.valueOf(j+1);
+                   if(cameraPrice.containsKey(j+1)){
+                        combo.addAll(cameraPrice.get(j+1));
+                   }
+               }
+           }
+           Collections.sort(combo);
+           comboPrices.put(key,combo);
+        }
+        
+        int q = sc.nextInt();
+        
+        for(int i=0;i<q;i++){
+            
+            int d = sc.nextInt();
+            int[] interestedBrands = new int[d];
+            String iB = "";
+            for(int j=0;j<d;j++){
+                iB += String.valueOf(sc.nextInt());
+            }
+            int k = sc.nextInt();
+           // System.out.println(iB);
+            if(comboPrices.containsKey(iB)){
+                ArrayList<Integer> val = (ArrayList<Integer>)comboPrices.get(iB);
+               // System.out.println(val);
+                if(val!= null && val.size() >= k){
+                    System.out.println(val.get(k-1));
+                }else{
+                    System.out.println("-1");
+                }
+            }
+            
+        }
+        
+    }
+}
+
+
