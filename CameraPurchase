@@ -1,0 +1,63 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution{
+    public static void main(String args[]){
+        
+        Scanner sc = new Scanner(System.in);
+        
+        int n = sc.nextInt();
+        
+        int[] brandsSold = new int[n];
+        HashMap<Integer,ArrayList<Integer>> cameraPrice = new HashMap<Integer,ArrayList<Integer>>();
+        
+        for(int i=0;i<n;i++){
+            brandsSold[i]=sc.nextInt();
+        }
+        
+        for(int i=0;i<n;i++){
+            int brand=brandsSold[i];
+            int price=sc.nextInt();
+            
+            if(cameraPrice.containsKey(brand)){
+                ArrayList<Integer> val = (ArrayList<Integer>)cameraPrice.get(brand);
+                val.add(price);
+                cameraPrice.put(brand,val);
+            }else{
+                ArrayList<Integer> val = new ArrayList<Integer>();
+                val.add(price);
+                cameraPrice.put(brand,val);
+            }
+            
+        }
+        
+        int q = sc.nextInt();
+        
+        for(int i=0;i<q;i++){
+            
+            int d = sc.nextInt();
+            int[] interestedBrands = new int[d];
+            for(int j=0;j<d;j++){
+                interestedBrands[j]=sc.nextInt();
+            }
+            int k = sc.nextInt();
+            
+            ArrayList<Integer> prices = new ArrayList<Integer>();
+            
+            for(Integer ib:interestedBrands){
+                if(cameraPrice.containsKey(ib)){
+                    prices.addAll(cameraPrice.get(ib));
+                }
+            }
+            
+            Collections.sort(prices);
+            if(prices.size() >= k){
+                System.out.println(prices.get(k-1));
+            }else{
+                System.out.println("-1");
+            }
+            
+        }
+        
+    }
+}
